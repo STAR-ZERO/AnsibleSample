@@ -1,0 +1,46 @@
+- name: install dependency
+  yum: name={{ item }} state=latest enablerepo=remi,epel
+  with_items:
+    - make
+    - gcc
+    - zlib-devel
+    - openssl-devel
+    - readline-devel
+    - ncurses-devel
+    - gdbm-devel
+    - db4-devel
+    - libffi-devel
+    - tk-devel
+    - libyaml-devel
+    - postfix
+    - mysql
+    - mysql-devel
+  sudo: yes
+
+- name: ruby exists
+  shell: ruby -v
+  register: ruby_exists
+  ignore_errors: yes
+  sudo: no
+
+- name: install ruby
+  shell: CONFIGURE_OPTS="--disable-install-rdoc" rbenv install -v {{ ruby_version }}
+  sudo: no
+  when: ruby_exists.stdout == '' or ruby_exists.stdout.find(ruby_version.replace('.', '\.')) != -1 # 正規表現なので "." を "\."に置換
+
+- name: select ruby version
+  shell: rbenv global {{ ruby_version }}
+  sudo: no
+
+- name: gem update
+  shell: gem update --system
+  sudo: no
+
+- name: bundler install
+  shell: gem install rbenv-rehash
+  sudo: no
+
+- name: rbenv rehash
+  shell: rbenv rehash
+  sudo: no
+

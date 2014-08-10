@@ -1,0 +1,24 @@
+- name: add rbenv user group
+  group: name=rbenv state=present
+
+- name: add group to user
+  user: name={{ rbenv_group_user }} group=rbenv append=yes
+
+- name: inatall rbenv
+  git: repo=git://github.com/sstephenson/rbenv.git
+       dest=/usr/local/rbenv
+
+- name: inatall ruby-build
+  git: repo=git://github.com/sstephenson/ruby-build.git
+       dest=/usr/local/rbenv/plugins/ruby-build
+
+- name: change rbenv permission
+  file: path=/usr/local/rbenv group=rbenv mode=2775 recurse=yes
+
+- name: add rbenv profile
+  template: src=rbenv.sh.j2 dest=/etc/profile.d/rbenv.sh owner=root group=root mode=0644
+
+- name: source rbenv profile
+  shell: source /etc/profile.d/rbenv.sh
+  sudo: no
+

@@ -1,0 +1,20 @@
+- name: add epel repo
+  yum: name=http://ftp.riken.jp/Linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm state=present
+  sudo: yes
+
+- name: add remi repo
+  yum: name=http://rpms.famillecollet.com/enterprise/remi-release-6.rpm state=present
+  sudo: yes
+
+- name: install libselinux-python
+  yum: name=libselinux-python state=present
+  sudo: yes
+
+- name: install vim
+  yum: pkg=vim state=latest
+  sudo: yes
+
+- name: install git
+  yum: pkg=git state=latest
+  sudo: yes
+

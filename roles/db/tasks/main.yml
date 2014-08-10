@@ -1,0 +1,7 @@
+- name: install mysql
+  yum: name=mysql-server state=present enablerepo=remi
+  sudo: yes
+
+- name: service mysql
+  service: name=mysqld state=started enabled=yes
+  sudo: yes

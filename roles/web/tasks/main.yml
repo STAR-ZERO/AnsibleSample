@@ -1,0 +1,8 @@
+- include: nginx.yml
+  sudo: yes
+
+- include: rbenv.yml
+  sudo: yes
+
+- include: ruby.yml
+  sudo: yes
